@@ -11,7 +11,9 @@ function AuthPage() {
       {
         isAccount ? <Login /> : <Register />
       }
-
+      <button onClick={() => setIsAccount(!isAccount)}>
+        {isAccount ? 'Create new account' : 'Go to login'}
+      </button>
     </>
   )
 }
