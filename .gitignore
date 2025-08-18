@@ -1,2 +1,26 @@
+#server
 /server/node_modules/
 /server/.env
+
+#spa
+# dependencies
+/spa/node_modules
+/spa/.pnp
+/spa/.pnp.js
+
+# testing
+/spa/coverage
+
+# production
+/spa/build
+
+# misc
+/spa/.DS_Store
+/spa/.env.local
+/spa/.env.development.local
+/spa/.env.test.local
+/spa/.env.production.local
+
+/spa/npm-debug.log*
+/spa/yarn-debug.log*
+/spa/syarn-error.log*
