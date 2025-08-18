@@ -26,7 +26,14 @@ function Login() {
     e.preventDefault();
     if (validate()) {
       console.log('Form is valid', { username, password });
-      // call API
+      try {
+        const data = await loginUser(username, password);
+        console.log('Успешный вход', data);
+
+        localStorage.setItem('token', data.token);
+    } catch (err) {
+        console.log(err.message);
+    }
     }
   };
 

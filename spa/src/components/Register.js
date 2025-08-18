@@ -1,10 +1,11 @@
 import { useState } from 'react';
-//import { registerUser } from '../api/api';
+import registerUser from '../api/registerUser';
 
 function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
+  const [message, setMessage] = useState('');
 
   const validate = () => {
     const newErrors = {};
@@ -26,7 +27,14 @@ function Register() {
     e.preventDefault();
     if (validate()) {
       console.log('Form is valid', { username, password });
-      // call API
+      try {
+        const data = await registerUser(username, password);
+        console.log('is ok!', data.message);
+        setMessage(data.message);
+        localStorage.setItem('token', data.token);
+    } catch (err) {
+        console.log(err.message);
+    }
     }
   };
 
@@ -41,6 +49,7 @@ function Register() {
         {errors.password && <p style={{ color: 'red' }}>{errors.password}</p>}
       </div>
       <button type="submit">Register</button>
+      {message.length > 0 ? <p>{message}</p> : null}
     </form>
   );
 }
