@@ -2,7 +2,9 @@ import { useState } from 'react';
 import CardHeader from './CardHeader';
 import ExerciseList from './ExerciseList';
 
-function Card({ data, onRemove, onUpdate }) {
+function Card({ 
+  data, onRemove, onUpdate, setWeek
+}) {
   const [isEditing, setIsEditing] = useState(false);
   const [isAddNewEx, setIsAddNewEx] = useState(false);
   const [tempDay, setTempDay] = useState(data.day);
@@ -14,7 +16,7 @@ function Card({ data, onRemove, onUpdate }) {
     reps: '',
   });
 
-  const addExercise = () => {
+  const addExercise = async () => {
     if (!exerciseForm.name) return;
     const newExercise = {
       name: exerciseForm.name,
@@ -27,15 +29,15 @@ function Card({ data, onRemove, onUpdate }) {
       previous: [],
     };
     console.log('newExercise', newExercise)
-    onUpdate({ exercises: [...data.exercises, newExercise] });
+    onAddExercise(newExercise)
     setExerciseForm({ name: '', weight: '', sets: '', reps: '' });
     setIsAddNewEx(!isAddNewEx);
   };
 
   const updateExercise = (index, updatedEx) => {
-    const newExercises = [...data.exercises];
-    newExercises[index] = updatedEx;
-    onUpdate({ exercises: newExercises });
+    // const newExercises = [...data.exercises];
+    // newExercises[index] = updatedEx;
+    // onUpdate({ exercises: newExercises });
   };
 
   const saveDay = () => {

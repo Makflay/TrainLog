@@ -4,6 +4,7 @@ import createDay from '../api/createDay';
 import getDayExercise from '../api/getDayExercise';
 import deleteDay from '../api/deleteDay';
 import updateDay from '../api/updateDay';
+import addExercise from '../api/addExercise';
 
 function CardBody() {
   const [week, setWeek] = useState([]);
@@ -13,6 +14,7 @@ function CardBody() {
     async function fetchData() {
       try {
         const data = await getDayExercise();
+        console.log('data', data)
         setWeek(data);
         setLoading(false);
       } catch (err) {
@@ -24,23 +26,32 @@ function CardBody() {
 
   const addCard = async () => {
     if (week.days.length < 7) {
-      await createDay("New Day", "Muscle Group");
-      const data = await getDayExercise();
-      setWeek(data);
+      const newDay = await createDay('New Day', 'Muscle Group');
+      setWeek(prevWeek => ({
+        ...prevWeek,
+        days: [...prevWeek.days, newDay]
+      }));
     }
   };
 
   const removeCard = async (id) => {
-    await deleteDay(id);
-    const data = await getDayExercise();
-    setWeek(data);
+    const {dayId: deletedId} = await deleteDay(id);
+    setWeek(prevWeek => ({
+    ...prevWeek,
+    days: prevWeek.days.filter(day => day._id !== deletedId)
+  }));
   };
 
   const editCard = async (id, newData) => {
-    await updateDay(id, newData);
-    const data = await getDayExercise();
-    setWeek(data);
-
+    const updatedDay = await updateDay(id, newData);
+    setWeek(prevWeek => ({
+      ...prevWeek,
+      days: prevWeek.days.map(el =>
+        el._id === id
+          ? { ...el, ...updatedDay }
+          : el
+      )
+    }));
   };
 
   if (loading) {
@@ -55,6 +66,7 @@ function CardBody() {
           data={card}
           onRemove={() => removeCard(card._id)}
           onUpdate={(newData) => editCard(card._id, newData)}
+          setWeek={setWeek}
         />
       ))}
       <button onClick={addCard}>Add Day(max 7)</button>

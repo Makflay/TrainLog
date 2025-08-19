@@ -21,12 +21,12 @@ exports.createDay = async (req, res) => {
     const week = await TrainingWeek.findOne({ user: req.user.id });
     if (!week) return res.status(404).json({ message: 'Week not found' });
 
-    const newDay = new Day({ week: week._id, day: day, muscles: muscles, exercises: [] });
+    const newDay = new Day({ week: week._id, day, muscles, exercises: [] });
     await newDay.save();
     week.days.push(newDay._id);
     await week.save();
 
-    res.status(201).json({message: 'New day was added'});
+    res.status(201).json(newDay);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -44,7 +44,7 @@ exports.updateDay = async (req, res) => {
     if (day) dayDoc.day = day;
     await dayDoc.save();
 
-    res.status(201).json({message: 'Day was update'});
+    res.status(201).json(dayDoc);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -65,7 +65,7 @@ exports.deleteDay = async (req, res) => {
 
     await dayDoc.deleteOne();
 
-    res.json({ message: 'Day deleted successfully' });
+    res.json({ dayId: dayDoc._id });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -76,14 +76,20 @@ exports.deleteDay = async (req, res) => {
 exports.createExercise = async (req, res) => {
   try {
     const { dayId } = req.params;
-    const { name, planned, done = [], previous = [] } = req.body;
+    const { name, planned} = req.body;
 
     const day = await Day.findById(dayId).populate('week');
-    if (!day || String(day.week.user) !== String(req.userId)) {
+    if (!day || String(day.week.user) !== String(req.user.id)) {
       return res.status(404).json({ message: 'Day not found' });
     }
 
-    const exercise = await Exercise.create({ day: day._id, name, planned, done, previous });
+    const setsCount = Number(planned?.sets) || 0;
+    const done = Array(setsCount).fill(0);
+    const previous = Array(setsCount).fill(0);
+
+    const exercise = await Exercise.create({ 
+      day: day._id, name, planned, done, previous
+    });
     day.exercises.push(exercise._id);
     await day.save();
 
@@ -93,3 +99,24 @@ exports.createExercise = async (req, res) => {
   }
 }
 
+
+//router.put('/exercises/:exerciseId', auth, async (req, res) => {
+//   const { name, planned, done, previous } = req.body;
+
+//   const exercise = await Exercise.findById(req.params.exerciseId).populate({
+//     path: 'day',
+//     populate: { path: 'week' }
+//   });
+
+//   if (!exercise || String(exercise.day.week.user) !== String(req.userId)) {
+//     return res.status(404).json({ message: 'Exercise not found' });
+//   }
+
+//   if (name) exercise.name = name;
+//   if (planned) exercise.planned = planned;
+//   if (done) exercise.done = done;
+//   if (previous) exercise.previous = previous;
+
+//   await exercise.save();
+//   res.json(exercise);
+// });

@@ -10,9 +10,9 @@ export default async function deleteDay(id) {
       'Content-Type': 'application/json'
     }
   });
-
+  const data = await res.json();
   if (!res.ok) throw new Error('Failed to delete day');
-  return res.json();
+  return data;
   } catch (err) {
     throw err;
   }
