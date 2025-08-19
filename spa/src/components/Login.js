@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 import loginUser from '../api/loginUser';
 
 function Login() {
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
@@ -28,9 +32,10 @@ function Login() {
       console.log('Form is valid', { username, password });
       try {
         const data = await loginUser(username, password);
-        console.log('Успешный вход', data);
+        console.log('login is ok', data);
 
-        localStorage.setItem('token', data.token);
+        login(data.token);
+        navigate('/');
     } catch (err) {
         console.log(err.message);
     }
