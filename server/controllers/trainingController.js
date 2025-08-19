@@ -9,7 +9,6 @@ exports.getDayExercise = async (req, res) => {
         path: 'days',
         populate: { path: 'exercises' }
       });
-    console.log('week', week);
     res.json(week);
   } catch (err) {
     res.status(400).json({ error: err.message });

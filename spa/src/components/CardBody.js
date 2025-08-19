@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Card from './Card';
 import createDay from '../api/createDay';
 import getDayExercise from '../api/getDayExercise';
+import deleteDay from '../api/deleteDay';
 
 function CardBody() {
   const [week, setWeek] = useState([]);
@@ -30,9 +31,10 @@ function CardBody() {
     }
   };
 
-  const removeCard = (index) => {
-    //req delete!
-    setWeek(week.days.filter((_, i) => i !== index));
+  const removeCard = async (id) => {
+    await deleteDay(id);
+    const data = await getDayExercise();
+    setWeek(data);
   };
 
   const editCard = (index, newData) => {
