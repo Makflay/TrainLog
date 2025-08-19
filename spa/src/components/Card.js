@@ -32,6 +32,12 @@ function Card({ data, onRemove, onUpdate }) {
     setIsAddNewEx(!isAddNewEx);
   };
 
+  const updateExercise = (index, updatedEx) => {
+    const newExercises = [...data.exercises];
+    newExercises[index] = updatedEx;
+    onUpdate({ exercises: newExercises });
+  };
+
   const saveDay = () => {
     onUpdate({ day: tempDay, muscles: tempMuscles });
     setIsEditing(false);
@@ -61,7 +67,7 @@ return (
         />
       )}
 
-      <ExerciseList exercises={data.exercises} />
+      <ExerciseList exercises={data.exercises} onUpdateExercise={updateExercise}/>
 
       {
         isAddNewEx ? (
