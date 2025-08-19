@@ -3,6 +3,7 @@ import Card from './Card';
 import createDay from '../api/createDay';
 import getDayExercise from '../api/getDayExercise';
 import deleteDay from '../api/deleteDay';
+import updateDay from '../api/updateDay';
 
 function CardBody() {
   const [week, setWeek] = useState([]);
@@ -12,8 +13,6 @@ function CardBody() {
     async function fetchData() {
       try {
         const data = await getDayExercise();
-        console.log('useEffect data', data)
-        console.log('useEffect data.days', data.days.length)
         setWeek(data);
         setLoading(false);
       } catch (err) {
@@ -37,10 +36,11 @@ function CardBody() {
     setWeek(data);
   };
 
-  const editCard = (index, newData) => {
-    const updated = [...week];
-    updated[index] = { ...updated[index], ...newData };
-    setWeek(updated);
+  const editCard = async (id, newData) => {
+    await updateDay(id, newData);
+    const data = await getDayExercise();
+    setWeek(data);
+
   };
 
   if (loading) {

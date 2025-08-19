@@ -32,6 +32,24 @@ exports.createDay = async (req, res) => {
   }
 }
 
+exports.updateDay = async (req, res) => {
+  try {
+    const { muscles, day } = req.body;
+    const dayDoc = await Day.findById(req.params.dayId).populate('week');
+    if (!dayDoc || String(dayDoc.week.user) !== String(req.user.id)) {
+      return res.status(404).json({ message: 'Day not found' });
+    }
+
+    if (muscles) dayDoc.muscles = muscles;
+    if (day) dayDoc.day = day;
+    await dayDoc.save();
+
+    res.status(201).json({message: 'Day was update'});
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+}
+
 exports.deleteDay = async (req, res) => {
   try {
     const dayDoc = await Day.findById(req.params.dayId).populate('week');
