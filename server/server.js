@@ -4,6 +4,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 
 const authRoutes = require('./routes/auth');
+const trainingRoutes = require('./routes/training');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -24,6 +25,7 @@ app.get('/', (req, res) => {
   res.send('TrainLog server is running!');
 });
 app.use('/auth', authRoutes);
+app.use('/training', trainingRoutes);
 
 app.listen(port, () => {
   console.log(`🚀 Server running on http://localhost:${port}`);

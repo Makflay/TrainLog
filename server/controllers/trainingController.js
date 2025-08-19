@@ -6,11 +6,15 @@ const Exercise = require('../models/exercise');
 exports.createDay = async (req, res) => {
   try {
     const { day, muscles } = req.body;
-
-    const week = await TrainingWeek.findOne({ user: req.userId });
+    //console.log('req', req);
+    console.log('req.user', req.user);
+    const week = await TrainingWeek.findOne({ user: req.user.id });
+    console.log('week', week);
     if (!week) return res.status(404).json({ message: 'Week not found' });
 
-    const newDay = await Day.create({ week: week._id, day, muscles, exercises: [] });
+    const newDay = new Day({ week: week._id, day, muscles, exercises: [] });
+    await newDay.save();
+    console.log('newDay', newDay);
     week.days.push(newDay._id);
     await week.save();
 

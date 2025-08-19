@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import Card from './Card';
+import createDay from '../api/createDay';
 
 function CardBody() {
   const [week, setWeek] = useState([]);
 
-  const addCard = () => {
+  const addCard = async () => {
     if (week.length < 7) {
       setWeek([...week, { day: "New Day", muscles: "Muscle Group", exercises: [] }]);
+      await createDay("New Day", "Muscle Group");
     }
   };
 
