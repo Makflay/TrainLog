@@ -14,10 +14,21 @@ function CardBody() {
     setWeek(week.filter((_, i) => i !== index));
   };
 
+  const updateCard = (index, newData) => {
+    const updated = [...week];
+    updated[index] = { ...updated[index], ...newData };
+    setWeek(updated);
+  };
+
   return (
     <div>
       {week.map((card, index) => (
-        <Card key={index} data={card} onRemove={() => removeCard(index)} />
+        <Card
+          key={index}
+          data={card}
+          onRemove={() => removeCard(index)}
+          onUpdate={(newData) => updateCard(index, newData)}
+        />
       ))}
       <button onClick={addCard}>+ Add Day</button>
     </div>
