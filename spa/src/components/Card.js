@@ -1,5 +1,6 @@
 import CardHeader from './CardHeader';
 import ExerciseList from './ExerciseList';
+import ExerciseHistory from './ExerciseHistory';
 
 function Card({ data, onRemove }) {
   return (

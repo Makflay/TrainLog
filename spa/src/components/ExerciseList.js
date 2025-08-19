@@ -1,8 +1,10 @@
+import ExerciseItem from './ExerciseItem';
+
 function ExerciseList({ exercises }) {
   return (
     <div>
       {exercises.map((el, i) => (
-        <div key={i}>{el}</div>
+        <ExerciseItem key={i} ex={el} />
       ))}
     </div>
   );
