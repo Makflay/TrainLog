@@ -7,7 +7,8 @@ const daySchema = new mongoose.Schema({
     required: true
   },
   day: { type: String, required: true },
-  muscles: { type: String, required: true }
+  muscles: { type: String, required: true },
+  exercises: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Exercise' }]
 });
 
 module.exports = mongoose.model('Day', daySchema);

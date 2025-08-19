@@ -1,4 +1,5 @@
 const API_URL = process.env.REACT_APP_API_URL;
+
 export default async function loginUser(username, password){
   try {
     const response = await fetch(`${API_URL}/auth/login`, {

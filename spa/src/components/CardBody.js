@@ -1,38 +1,61 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Card from './Card';
 import createDay from '../api/createDay';
+import getDayExercise from '../api/getDayExercise';
 
 function CardBody() {
   const [week, setWeek] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await getDayExercise();
+        console.log('useEffect data', data)
+        console.log('useEffect data.days', data.days.length)
+        setWeek(data);
+        setLoading(false);
+      } catch (err) {
+        console.error('Error fetching week:', err);
+      }
+    }
+    fetchData()
+  }, []);
 
   const addCard = async () => {
-    if (week.length < 7) {
-      setWeek([...week, { day: "New Day", muscles: "Muscle Group", exercises: [] }]);
+    if (week.days.length < 7) {
       await createDay("New Day", "Muscle Group");
+      const data = await getDayExercise();
+      setWeek(data);
     }
   };
 
   const removeCard = (index) => {
-    setWeek(week.filter((_, i) => i !== index));
+    //req delete!
+    setWeek(week.days.filter((_, i) => i !== index));
   };
 
-  const updateCard = (index, newData) => {
+  const editCard = (index, newData) => {
     const updated = [...week];
     updated[index] = { ...updated[index], ...newData };
     setWeek(updated);
   };
 
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <div>
-      {week.map((card, index) => (
+      {week.days.map((card) => (
         <Card
-          key={index}
+          key={card._id}
           data={card}
-          onRemove={() => removeCard(index)}
-          onUpdate={(newData) => updateCard(index, newData)}
+          onRemove={() => removeCard(card._id)}
+          onUpdate={(newData) => editCard(card._id, newData)}
         />
       ))}
-      <button onClick={addCard}>+ Add Day</button>
+      <button onClick={addCard}>Add Day(max 7)</button>
     </div>
   );
 };

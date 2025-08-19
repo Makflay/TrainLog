@@ -1,9 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../middleware/authMiddleware');
-const {createDay, createExercise} = require('../controllers/trainingController');
+const {
+  getDayExercise, createDay, deleteDay, createExercise
+} = require('../controllers/trainingController');
 
-router.post('/days', authMiddleware, createDay);
-router.post('/days/:dayId/exercises', authMiddleware, createExercise);
+router.get('/', authMiddleware, getDayExercise)
+router.post('/day/create', authMiddleware, createDay);
+router.delete('/day/:dayId', authMiddleware, deleteDay);
+
+router.post('/exercise/create/:dayId', authMiddleware, createExercise);
 
 module.exports = router;

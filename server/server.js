@@ -21,9 +21,9 @@ mongoose.connect(mongoUri, {
 .catch(err => console.error('MongoDB connection error:', err));
 
 //routes
-app.get('/', (req, res) => {
-  res.send('TrainLog server is running!');
-});
+// app.get('/', (req, res) => {
+//   res.send('TrainLog server is running!');
+// });
 app.use('/auth', authRoutes);
 app.use('/training', trainingRoutes);
 
