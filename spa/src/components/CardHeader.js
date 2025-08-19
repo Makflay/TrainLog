@@ -1,6 +1,13 @@
-function CardHeader({ day, muscles }) {
+function CardHeader({ day, muscles, onEdit }) {
   return (
-    <h2>{day} - {muscles}</h2>
+    <div>
+      CardHeader
+      <h2>
+        {day} - {muscles}
+      </h2>
+      <button onClick={onEdit}>Edit</button>
+      CardHeader
+    </div>
   );
 }
 

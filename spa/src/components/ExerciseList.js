@@ -1,11 +1,14 @@
 import ExerciseItem from './ExerciseItem';
 
 function ExerciseList({ exercises }) {
+  console.log('ExerciseList exercises', exercises)
   return (
     <div>
+      ExerciseList
       {exercises.map((el, i) => (
-        <ExerciseItem key={i} ex={el} />
+        <ExerciseItem key={i} exercise={el} />
       ))}
+      ExerciseList
     </div>
   );
 }

@@ -4,6 +4,7 @@ import ExerciseList from './ExerciseList';
 
 function Card({ data, onRemove, onUpdate }) {
   const [isEditing, setIsEditing] = useState(false);
+  const [isAddNewEx, setIsAddNewEx] = useState(false);
   const [tempDay, setTempDay] = useState(data.day);
   const [tempMuscles, setTempMuscles] = useState(data.muscles);
   const [exerciseForm, setExerciseForm] = useState({
@@ -25,8 +26,10 @@ function Card({ data, onRemove, onUpdate }) {
       done: [],
       previous: [],
     };
+    console.log('newExercise', newExercise)
     onUpdate({ exercises: [...data.exercises, newExercise] });
-    setExerciseForm({ name: "", weight: "", sets: "", reps: "" });
+    setExerciseForm({ name: '', weight: '', sets: '', reps: '' });
+    setIsAddNewEx(!isAddNewEx);
   };
 
   const saveDay = () => {
@@ -54,38 +57,47 @@ return (
         <CardHeader
           day={data.day}
           muscles={data.muscles}
+          onEdit={() => setIsEditing(true)}
         />
       )}
 
       <ExerciseList exercises={data.exercises} />
 
-      <div>
-        <input
-          type="text"
-          placeholder="Exercise name"
-          value={exerciseForm.name}
-          onChange={(e) => setExerciseForm({ ...exerciseForm, name: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Weight"
-          value={exerciseForm.weight}
-          onChange={(e) => setExerciseForm({ ...exerciseForm, weight: e.target.value })}
-        />
-        <input
-          type="number"
-          placeholder="Sets"
-          value={exerciseForm.sets}
-          onChange={(e) => setExerciseForm({ ...exerciseForm, sets: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Reps"
-          value={exerciseForm.reps}
-          onChange={(e) => setExerciseForm({ ...exerciseForm, reps: e.target.value })}
-        />
-        <button onClick={addExercise}>Add</button>
-      </div>
+      {
+        isAddNewEx ? (
+          <div>
+            <input
+              type="text"
+              placeholder="Exercise name"
+              value={exerciseForm.name}
+              onChange={(e) => setExerciseForm({ ...exerciseForm, name: e.target.value })}
+            />
+            <input
+              type="text"
+              placeholder="Weight"
+              value={exerciseForm.weight}
+              onChange={(e) => setExerciseForm({ ...exerciseForm, weight: e.target.value })}
+            />
+            <input
+              type="number"
+              placeholder="Sets"
+              value={exerciseForm.sets}
+              onChange={(e) => setExerciseForm({ ...exerciseForm, sets: e.target.value })}
+            />
+            <input
+              type="text"
+              placeholder="Reps"
+              value={exerciseForm.reps}
+              onChange={(e) => setExerciseForm({ ...exerciseForm, reps: e.target.value })}
+            />
+            <button onClick={addExercise}>Add</button>
+          </div>
+        )
+        :
+        (
+          <button onClick={() => {setIsAddNewEx(!isAddNewEx)}}>Add new exercise</button>
+        )
+      }
 
       <button onClick={onRemove}>
         Remove

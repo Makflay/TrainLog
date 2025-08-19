@@ -3,6 +3,7 @@ import ExerciseProgress from './ExerciseProgress';
 import ExerciseHistory from './ExerciseHistory';
 
 function ExerciseItem({ exercise }) {
+  console.log('ExerciseItem exercise', exercise)
   return (
     <div>
       <ExerciseTitle name={exercise.name} planned={exercise.planned} />
