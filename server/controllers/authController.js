@@ -1,11 +1,14 @@
-const User = require('../models/user');
 const jwt = require('jsonwebtoken');
+const User = require('../models/user');
+const TrainingWeek = require('../models/trainingWeek');
 
 exports.register = async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = new User({ username, password });
     await user.save();
+    const week = new TrainingWeek({user: user._id, days: []});
+    await week.save();
     res.status(201).json({ message: 'User registered' });
   } catch (err) {
     res.status(400).json({ error: err.message });
