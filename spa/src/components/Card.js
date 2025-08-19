@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import CardHeader from './CardHeader';
 import ExerciseList from './ExerciseList';
+import createExercise from '../api/createExercise';
 
 function Card({ 
   data, onRemove, onUpdate, setWeek
@@ -28,11 +29,31 @@ function Card({
       done: [],
       previous: [],
     };
-    console.log('newExercise', newExercise)
-    onAddExercise(newExercise)
+    const createdExercise = await createExercise(data._id, newExercise);
+    console.log('createdExercise', createdExercise)
+    
+
+    setWeek(prevWeek => ({
+      ...prevWeek,
+      days: prevWeek.days.map(day =>
+        day._id === data._id
+          ? { ...day, exercises: [...day.exercises, createdExercise] }
+          : day
+      )
+    }));
+
     setExerciseForm({ name: '', weight: '', sets: '', reps: '' });
     setIsAddNewEx(!isAddNewEx);
   };
+
+
+  // const onAddExercise = async (dayId, exercise) =>  {
+  //   await addExercise(dayId, exercise);
+
+  //   const data = await getDayExercise();
+  //   setWeek(data);
+  // }
+  //onUpdateExercise={(exerciseId, newData) => updateExercise(card._id, exerciseId, newData)}
 
   const updateExercise = (index, updatedEx) => {
     // const newExercises = [...data.exercises];

@@ -4,7 +4,6 @@ import createDay from '../api/createDay';
 import getDayExercise from '../api/getDayExercise';
 import deleteDay from '../api/deleteDay';
 import updateDay from '../api/updateDay';
-import addExercise from '../api/addExercise';
 
 function CardBody() {
   const [week, setWeek] = useState([]);

@@ -1,6 +1,6 @@
 const API_URL = process.env.REACT_APP_API_URL;
 
-export default async function addExercise(dayId, exercise) {
+export default async function createExercise(dayId, exercise) {
   const token = localStorage.getItem('token');
   try {
     const res = await fetch(`${API_URL}/training/exercise/create/${dayId}`, {
