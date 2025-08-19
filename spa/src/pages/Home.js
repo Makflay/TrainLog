@@ -1,8 +1,9 @@
+import CardBody from '../components/CardBody';
 
 function Home() {
 
   return (
-    <p>Home</p>
+    <CardBody />
   )
 }
 
