@@ -1,0 +1,29 @@
+.exerciseItem {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.exerciseItem input {
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.exerciseItem button {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.exerciseItem button:hover {
+  background-color: #1e40af;
+}

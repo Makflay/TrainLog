@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import styles from './ui/ExerciseItem.module.css';
 import ExerciseTitle from './ExerciseTitle';
 import ExerciseProgress from './ExerciseProgress';
 import ExerciseHistory from './ExerciseHistory';
@@ -38,7 +39,7 @@ function ExerciseItem({ exercise, onUpdate }) {
 
 
   return (
-    <div>
+    <div className={styles.exerciseItem}>
       <ExerciseTitle name={exercise.name} planned={exercise.planned} />
       {/* Current progress */}
       <div className="mt-2">
