@@ -42,16 +42,16 @@ function Register() {
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
       <h1>Create account</h1>
+      {message.length > 0 ? <p>{message}</p> : null}
       <div>
         <input value={username} onChange={e => setUsername(e.target.value)} placeholder='Enter your name' type='text' />
-        {errors.username && <p style={{ color: 'red' }}>{errors.username}</p>}
+        {errors.username && <p>{errors.username}</p>}
       </div>
       <div>
         <input value={password} onChange={e => setPassword(e.target.value)} placeholder='Enter your password' type='password'/>
-        {errors.password && <p style={{ color: 'red' }}>{errors.password}</p>}
+        {errors.password && <p>{errors.password}</p>}
       </div>
       <button type="submit">Register</button>
-      {message.length > 0 ? <p>{message}</p> : null}
     </form>
   );
 }

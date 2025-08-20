@@ -40,9 +40,10 @@
 }
 
 .form p {
+  font-size: 13px;
   color: #dc2626;
-  font-size: 12px;
-  margin-top: 4px;
+  margin-top: 8px;
+  text-align: center;
 }
 
 .form button {
@@ -70,10 +71,3 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
-
-/* .form .message {
-  font-size: 13px;
-  color: #16a34a;
-  margin-top: 8px;
-  text-align: center;
-} */

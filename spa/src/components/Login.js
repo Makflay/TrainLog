@@ -39,6 +39,9 @@ function Login() {
         navigate('/');
     } catch (err) {
         console.log(err.message);
+        const newErrors = {};
+        newErrors.api = err.message;
+        setErrors(newErrors);
     }
     }
   };
@@ -46,13 +49,14 @@ function Login() {
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
       <h1>Sign in</h1>
+      {errors.api && <p>{errors.api}</p>}
       <div>
         <input value={username} onChange={e => setUsername(e.target.value)} placeholder='Login(your name)' type='text' />
-        {errors.username && <p className={styles.message}>{errors.username}</p>}
+        {errors.username && <p>{errors.username}</p>}
       </div>
       <div>
         <input value={password} onChange={e => setPassword(e.target.value)} placeholder='Password' type='password'/>
-        {errors.password && <p className={styles.message}>{errors.password}</p>}
+        {errors.password && <p>{errors.password}</p>}
       </div>
       <button type="submit">Login</button>
     </form>
