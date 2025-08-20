@@ -123,24 +123,3 @@ exports.updateExercise = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 }
-
-//router.put('/exercises/:exerciseId', auth, async (req, res) => {
-//   const { name, planned, done, previous } = req.body;
-
-//   const exercise = await Exercise.findById(req.params.exerciseId).populate({
-//     path: 'day',
-//     populate: { path: 'week' }
-//   });
-
-//   if (!exercise || String(exercise.day.week.user) !== String(req.userId)) {
-//     return res.status(404).json({ message: 'Exercise not found' });
-//   }
-
-//   if (name) exercise.name = name;
-//   if (planned) exercise.planned = planned;
-//   if (done) exercise.done = done;
-//   if (previous) exercise.previous = previous;
-
-//   await exercise.save();
-//   res.json(exercise);
-// });

@@ -1,7 +1,6 @@
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import containerStyles from './ui/FormContainer.module.css'
 import styles from './ui/Form.module.css'
 import loginUser from '../api/loginUser';
 
@@ -45,10 +44,10 @@ function Login() {
   };
 
   return (
-    <div className={containerStyles.container}> 
-      <form onSubmit={handleSubmit} className={styles.form}>
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <h1>Sign in</h1>
       <div>
-        <input value={username} onChange={e => setUsername(e.target.value)} placeholder='Name' type='text' />
+        <input value={username} onChange={e => setUsername(e.target.value)} placeholder='Login(your name)' type='text' />
         {errors.username && <p className={styles.message}>{errors.username}</p>}
       </div>
       <div>
@@ -56,9 +55,7 @@ function Login() {
         {errors.password && <p className={styles.message}>{errors.password}</p>}
       </div>
       <button type="submit">Login</button>
-      </form>
-    </div>
-    
+    </form>
   );
 }
 

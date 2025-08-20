@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import styles from './ui/Form.module.css'
 import registerUser from '../api/registerUser';
 
 function Register() {
@@ -39,13 +40,14 @@ function Register() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <h1>Create account</h1>
       <div>
-        <input value={username} onChange={e => setUsername(e.target.value)} placeholder='Name' type='text' />
+        <input value={username} onChange={e => setUsername(e.target.value)} placeholder='Enter your name' type='text' />
         {errors.username && <p style={{ color: 'red' }}>{errors.username}</p>}
       </div>
       <div>
-        <input value={password} onChange={e => setPassword(e.target.value)} placeholder='Password' type='password'/>
+        <input value={password} onChange={e => setPassword(e.target.value)} placeholder='Enter your password' type='password'/>
         {errors.password && <p style={{ color: 'red' }}>{errors.password}</p>}
       </div>
       <button type="submit">Register</button>

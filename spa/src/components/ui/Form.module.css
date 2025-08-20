@@ -12,6 +12,14 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.form h1 {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #111827;
+}
+
 .form div {
   display: flex;
   flex-direction: column;
@@ -63,9 +71,9 @@
   cursor: not-allowed;
 }
 
-.form .message {
+/* .form .message {
   font-size: 13px;
   color: #16a34a;
   margin-top: 8px;
   text-align: center;
-}
+} */
