@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import style from './ui/Card.module.css';
 import CardHeader from './CardHeader';
 import ExerciseList from './ExerciseList';
 import createExercise from '../api/createExercise';
@@ -69,7 +70,7 @@ function Card({
   };
 
 return (
-    <div>
+    <div className={style.card}>
       {isEditing ? (
         <div>
           <input
