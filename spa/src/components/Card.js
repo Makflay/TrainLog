@@ -30,9 +30,7 @@ function Card({
       previous: [],
     };
     const createdExercise = await createExercise(data._id, newExercise);
-    console.log('createdExercise', createdExercise)
     
-
     setWeek(prevWeek => ({
       ...prevWeek,
       days: prevWeek.days.map(day =>
@@ -55,11 +53,15 @@ function Card({
   // }
   //onUpdateExercise={(exerciseId, newData) => updateExercise(card._id, exerciseId, newData)}
 
-  const updateExercise = (index, updatedEx) => {
+  const updateExercise = async (index, updatedEx) => {
     // const newExercises = [...data.exercises];
     // newExercises[index] = updatedEx;
     // onUpdate({ exercises: newExercises });
   };
+
+  const deleteExercise = async () => {
+
+  }
 
   const saveDay = () => {
     onUpdate({ day: tempDay, muscles: tempMuscles });
