@@ -1,6 +1,8 @@
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import containerStyles from './ui/FormContainer.module.css'
+import styles from './ui/Form.module.css'
 import loginUser from '../api/loginUser';
 
 function Login() {
@@ -43,17 +45,20 @@ function Login() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <div className={containerStyles.container}> 
+      <form onSubmit={handleSubmit} className={styles.form}>
       <div>
         <input value={username} onChange={e => setUsername(e.target.value)} placeholder='Name' type='text' />
-        {errors.username && <p style={{ color: 'red' }}>{errors.username}</p>}
+        {errors.username && <p className={styles.message}>{errors.username}</p>}
       </div>
       <div>
         <input value={password} onChange={e => setPassword(e.target.value)} placeholder='Password' type='password'/>
-        {errors.password && <p style={{ color: 'red' }}>{errors.password}</p>}
+        {errors.password && <p className={styles.message}>{errors.password}</p>}
       </div>
       <button type="submit">Login</button>
-    </form>
+      </form>
+    </div>
+    
   );
 }
 
