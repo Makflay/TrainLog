@@ -1,10 +1,9 @@
 import ExerciseItem from './ExerciseItem';
+import styles from './ui/ExerciseList.module.css';
 
 function ExerciseList({ exercises, onUpdateExercise }) {
-  console.log('ExerciseList exercises', exercises)
   return (
-    <div>
-      ExerciseList
+    <div className={styles.exerciseList}>
       {exercises.map((el, i) => (
         <ExerciseItem
           key={i}
@@ -12,7 +11,6 @@ function ExerciseList({ exercises, onUpdateExercise }) {
           onUpdate={(updatedEx) => onUpdateExercise(i, updatedEx)}
         />
       ))}
-      ExerciseList
     </div>
   );
 }
