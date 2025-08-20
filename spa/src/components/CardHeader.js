@@ -1,12 +1,13 @@
+import styles from './ui/CardHeader.module.css';
+import editButton from './ui/SubmitButton.module.css';
+
 function CardHeader({ day, muscles, onEdit }) {
   return (
-    <div>
-      CardHeader
-      <h2>
+    <div className={styles.cardHeader}>
+      <h1>
         {day} - {muscles}
-      </h2>
-      <button onClick={onEdit}>Edit</button>
-      CardHeader
+      </h1>
+      <button onClick={onEdit} className={editButton.submit}>Edit</button>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import style from './ui/CardBody.module.css';
-import editButton from './ui/EditButton.module.css';
+import editButton from './ui/SubmitButton.module.css';
 import container from './ui/CardBodyContainer.module.css';
 import Card from './Card';
 import createDay from '../api/createDay';
@@ -73,7 +73,7 @@ function CardBody() {
           />
         ))}
       </div>
-      <button onClick={addCard} className={editButton.edit}>Add Day(max 7)</button>
+      <button onClick={addCard} className={editButton.submit}>Add Day(max 7)</button>
     </div>
 
   );

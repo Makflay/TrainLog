@@ -3,14 +3,12 @@
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   padding: 16px;
-  /* flex: 1 1 calc(33.333% - 16px); */
-  /* min-width: 220px; */
   display: flex;
   flex-direction: column;
   gap: 12px;
   height: 300px;
   overflow: auto;
 
-  flex: 0 0 300px; /* фиксированная ширина */
-  min-width: 300px; /* минимальная ширина для перестроения на мобилке */
+  flex: 0 0 300px;
+  min-width: 300px;
 }
