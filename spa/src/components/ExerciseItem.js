@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './ui/ExerciseItem.module.css';
 import checkBtn from './ui/CheckButton.module.css';
 import deleteBtn from './ui/DeleteButton.module.css';
@@ -6,7 +6,9 @@ import ExerciseTitle from './ExerciseTitle';
 import ExerciseProgress from './ExerciseProgress';
 import ExerciseHistory from './ExerciseHistory';
 
-function ExerciseItem({ exercise, updateExerciseItem, deleteExerciseItem, onUpdateDoneItem }) {  
+function ExerciseItem({
+  exercise, updateExerciseItem, deleteExerciseItem, onUpdateDoneItem, onUpdatePreviousItem
+}) {  
 
   const [isUpdateExercise, setIsUpdateExercise] = useState(false);
   const [exerciseForm, setExerciseForm] = useState({
@@ -19,21 +21,28 @@ function ExerciseItem({ exercise, updateExerciseItem, deleteExerciseItem, onUpda
     done: exercise.done,
     previous: exercise.previous,
   });
-  const [doneSets, setDoneSets] = useState(exercise.done.length ? exercise.done : []);
   const [isUpdateDoneSets, setIsUpdateDoneSets] = useState(false);
-  const [prevSets, setPrevSets] = useState(exercise.previous.length ? exercise.previous : []);
-  const [isUpdatePrevSets] = useState(false);
+  const [isUpdatePrevSets, setIsUpdatePrevSets] = useState(false);
+
+  useEffect(() => {
+    setExerciseForm({
+      name: exercise.name,
+      planned: {
+        weight: exercise.planned.weight,
+        sets: exercise.planned.sets,
+        reps: exercise.planned.reps
+      },
+      done: exercise.done,
+      previous: exercise.previous,
+    });
+  }, [exercise]);
 
   const saveExercise = () => {
     updateExerciseItem(exerciseForm);
     setIsUpdateExercise(false);
   }
 
-  // update one set Done
   const updateDoneSet = () => {
-    console.log('updateDoneSet');
-    console.log(exerciseForm.done);
-    setIsUpdateDoneSets(false);
     onUpdateDoneItem(exerciseForm.done);
     setIsUpdateDoneSets(false);
   };
@@ -46,28 +55,19 @@ function ExerciseItem({ exercise, updateExerciseItem, deleteExerciseItem, onUpda
     });
   };
 
-  // update one set Previous
-  const updatePrevSet = (index, value) => {
+  const updatePrevSet = () => {
     console.log('updatePrevSet')
-    // const newPrev = [...prevSets];
-    // newPrev[index] = parseInt(value) || 0;
-    // setPrevSets(newPrev);
+    onUpdatePreviousItem(exerciseForm.previous);
+    setIsUpdatePrevSets(false);
   };
 
-  // Add new set
-  const addDoneSet = () => {
-    if (doneSets.length < 12) setDoneSets([...doneSets, 0]);
+  const handlePrevChange = (i, value) => {
+    setExerciseForm(prev => {
+      const newDone = [...prev.previous];
+      newDone[i] = Number(value);
+      return { ...prev, previous: newDone };
+    });
   };
-  const addPrevSet = () => {
-    if (prevSets.length < 12) setPrevSets([...prevSets, 0]);
-  };
-
-  const savePrev = () => {
-    console.log('savePrev');
-    //onUpdate({ ...exercise, previous: prevSets });
-  } 
-
-
 
   return (
     <div className={styles.exerciseItem}>
@@ -154,20 +154,23 @@ function ExerciseItem({ exercise, updateExerciseItem, deleteExerciseItem, onUpda
           (
             <div className={styles.inputRow}>
               <span>Previous:</span>
-                {prevSets.map((val, i) => (
+                {exerciseForm.previous.map((el, i) => (
                   <input
                     key={i}
                     type="number"
-                    value={val}
-                    onChange={(e) => updatePrevSet(i, e.target.value)}
+                    value={el}
+                    onChange={e => handlePrevChange(i, e.target.value)}
                   />
                 ))}
-              <button onClick={savePrev}>save</button>
+              <button onClick={updatePrevSet}>save</button>
             </div>
           )
           :
           (
-            <ExerciseHistory previous={exercise.previous} />
+            <ExerciseHistory
+              previous={exercise.previous}
+              onEdit={() => setIsUpdatePrevSets(true)}
+            />
           )
       }
       <button onClick={deleteExerciseItem} className={deleteBtn.delete}>Delete Exercise</button>

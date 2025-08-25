@@ -1,7 +1,9 @@
 import ExerciseItem from './ExerciseItem';
 import styles from './ui/ExerciseList.module.css';
 
-function ExerciseList({ exercises, onUpdateExercise, onDeleteExercise, onUpdateDone }) {
+function ExerciseList({
+  exercises, onUpdateExercise, onDeleteExercise, onUpdateDone, onUpdatePrevious
+}) {
   console.log('exercises', exercises)
   return (
     <div className={styles.exerciseList}>
@@ -12,6 +14,7 @@ function ExerciseList({ exercises, onUpdateExercise, onDeleteExercise, onUpdateD
           updateExerciseItem={(updatedEx) => onUpdateExercise(el._id, updatedEx)}
           deleteExerciseItem={() => onDeleteExercise(el._id)}
           onUpdateDoneItem={(updatedDone) => onUpdateDone(el._id, updatedDone)}
+          onUpdatePreviousItem={(updatedrevious) => onUpdatePrevious(el._id, updatedrevious)}
         />
       ))}
     </div>
