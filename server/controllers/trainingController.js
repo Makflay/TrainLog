@@ -35,7 +35,9 @@ exports.createDay = async (req, res) => {
 exports.updateDay = async (req, res) => {
   try {
     const { muscles, day } = req.body;
-    const dayDoc = await Day.findById(req.params.dayId).populate('week');
+    const dayDoc = await Day.findById(req.params.dayId)
+      .populate('week')
+      .populate('exercises');
     if (!dayDoc || String(dayDoc.week.user) !== String(req.user.id)) {
       return res.status(404).json({ message: 'Day not found' });
     }
@@ -70,8 +72,6 @@ exports.deleteDay = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 }
-
-
 
 exports.createExercise = async (req, res) => {
   try {

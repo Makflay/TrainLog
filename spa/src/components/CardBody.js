@@ -16,7 +16,7 @@ function CardBody() {
     async function fetchData() {
       try {
         const data = await getDayExercise();
-        console.log('data', data)
+        console.log('data', data);
         setWeek(data);
         setLoading(false);
       } catch (err) {
@@ -45,7 +45,9 @@ function CardBody() {
   };
 
   const editCard = async (id, newData) => {
+    console.log('newData', newData)
     const updatedDay = await updateDay(id, newData);
+    console.log('updatedDay!!!!!', updatedDay)
     setWeek(prevWeek => ({
       ...prevWeek,
       days: prevWeek.days.map(el =>
@@ -54,6 +56,8 @@ function CardBody() {
           : el
       )
     }));
+    console.log('week', week)
+    console.log('Error?')
   };
 
   if (loading) {
@@ -63,7 +67,7 @@ function CardBody() {
   return (
     <div className={container.container}>
       <div className={style.container}>
-        {week.days.map((card) => (
+        {week.days.map( card => (
           <Card
             key={card._id}
             data={card}

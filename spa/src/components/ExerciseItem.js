@@ -5,23 +5,35 @@ import ExerciseProgress from './ExerciseProgress';
 import ExerciseHistory from './ExerciseHistory';
 
 function ExerciseItem({ exercise, onUpdate }) {
-  console.log('ExerciseItem exercise', exercise)
+  console.log('exercise', exercise)
 
   const [doneSets, setDoneSets] = useState(exercise.done.length ? exercise.done : []);
+  const [isUpdateDoneSets] = useState(false);
   const [prevSets, setPrevSets] = useState(exercise.previous.length ? exercise.previous : []);
+  const [isUpdatePrevSets] = useState(false);
+
+  const updateDataExercise = () => {
+
+  }
+
+  const removeExercise = () => {
+
+  }
 
   // update one set Done
   const updateDoneSet = (index, value) => {
-    const newDone = [...doneSets];
-    newDone[index] = parseInt(value) || 0;
-    setDoneSets(newDone);
+    console.log('updateDoneSet')
+    // const newDone = [...doneSets];
+    // newDone[index] = parseInt(value) || 0;
+    // setDoneSets(newDone);
   };
 
   // update one set Previous
   const updatePrevSet = (index, value) => {
-    const newPrev = [...prevSets];
-    newPrev[index] = parseInt(value) || 0;
-    setPrevSets(newPrev);
+    console.log('updatePrevSet')
+    // const newPrev = [...prevSets];
+    // newPrev[index] = parseInt(value) || 0;
+    // setPrevSets(newPrev);
   };
 
   // Add new set
@@ -33,8 +45,14 @@ function ExerciseItem({ exercise, onUpdate }) {
   };
 
   // save updates
-  const saveDone = () => onUpdate({ ...exercise, done: doneSets });
-  const savePrev = () => onUpdate({ ...exercise, previous: prevSets });
+  const saveDone = () => {
+    console.log('saveDone')
+    //onUpdate({ ...exercise, done: doneSets });
+  }
+  const savePrev = () => {
+    console.log('savePrev');
+    //onUpdate({ ...exercise, previous: prevSets });
+  } 
 
 
 
@@ -42,48 +60,48 @@ function ExerciseItem({ exercise, onUpdate }) {
     <div className={styles.exerciseItem}>
       <ExerciseTitle name={exercise.name} planned={exercise.planned} />
       {/* Current progress */}
-      <div className="mt-2">
-        <span>Done:</span>
-        <div>
-          {doneSets.map((val, i) => (
-            <input
-              key={i}
-              type="number"
-              value={val}
-              onChange={(e) => updateDoneSet(i, e.target.value)}
-            />
-          ))}
-          {doneSets.length < 12 && (
-            <button onClick={addDoneSet}>
-              + Set{`max 12`}
-            </button>
-          )}
-        </div>
-        <button onClick={saveDone}>Save Done</button>
-      </div>
-      <ExerciseProgress done={exercise.done} />
 
+      {
+        isUpdateDoneSets ? 
+          (
+            <div className={styles.inputRow}>
+              <span>Done:</span>
+                {doneSets.map((val, i) => (
+                  <input
+                    key={i}
+                    type="number"
+                    value={val}
+                    onChange={(e) => updateDoneSet(i, e.target.value)}
+                  />
+                ))}
+              <button onClick={saveDone}>save</button>
+            </div>
+          )
+          :
+          (<ExerciseProgress done={exercise.done} />)
+      }
       {/* History */}
-      <div>
-        <span>Previous:</span>
-        <div>
-          {prevSets.map((val, i) => (
-            <input
-              key={i}
-              type="number"
-              value={val}
-              onChange={(e) => updatePrevSet(i, e.target.value)}
-            />
-          ))}
-          {prevSets.length < 12 && (
-            <button onClick={addPrevSet}>
-              + Set(max12)
-            </button>
-          )}
-        </div>
-        <button onClick={savePrev}>Save Previous</button>
-      </div>
-      <ExerciseHistory previous={exercise.previous} />
+      {
+        isUpdatePrevSets ? 
+          (
+            <div className={styles.inputRow}>
+              <span>Previous:</span>
+                {prevSets.map((val, i) => (
+                  <input
+                    key={i}
+                    type="number"
+                    value={val}
+                    onChange={(e) => updatePrevSet(i, e.target.value)}
+                  />
+                ))}
+              <button onClick={savePrev}>save</button>
+            </div>
+          )
+          :
+          (
+            <ExerciseHistory previous={exercise.previous} />
+          )
+      }
     </div>
   );
 }

@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import style from './ui/Card.module.css';
+import checkBtn from './ui/CheckButton.module.css'
 import CardHeader from './CardHeader';
 import ExerciseList from './ExerciseList';
 import createExercise from '../api/createExercise';
+import updateExercise from '../api/updateExercise';
 
 function Card({ 
   data, onRemove, onUpdate, setWeek
 }) {
+  console.log('Card data', data)
   const [isEditing, setIsEditing] = useState(false);
   const [isAddNewEx, setIsAddNewEx] = useState(false);
   const [tempDay, setTempDay] = useState(data.day);
@@ -45,26 +48,37 @@ function Card({
     setIsAddNewEx(!isAddNewEx);
   };
 
+  const updateExercise = async (exerciseId, updatedData) => {
+    console.log('exerciseId', exerciseId)
+    console.log('dayId', data._id)
+    console.log('updatedData', updatedData)
+    // try {
+    //   const updatedExercise = await updateExercise(exerciseId, updatedData);
 
-  // const onAddExercise = async (dayId, exercise) =>  {
-  //   await addExercise(dayId, exercise);
-
-  //   const data = await getDayExercise();
-  //   setWeek(data);
-  // }
-  //onUpdateExercise={(exerciseId, newData) => updateExercise(card._id, exerciseId, newData)}
-
-  const updateExercise = async (index, updatedEx) => {
-    // const newExercises = [...data.exercises];
-    // newExercises[index] = updatedEx;
-    // onUpdate({ exercises: newExercises });
+    //   setWeek(prevWeek => ({
+    //     ...prevWeek,
+    //     days: prevWeek.days.map(day =>
+    //       day._id === dayId
+    //         ? {
+    //             ...day,
+    //             exercises: day.exercises.map(ex =>
+    //               ex._id === exerciseId ? updatedExercise : ex
+    //             )
+    //           }
+    //         : day
+    //     )
+    //   }));
+    // } catch (err) {
+    //   console.error(err);
+    // }
   };
 
   const deleteExercise = async () => {
-
+    //
   }
 
   const saveDay = () => {
+    console.log('tempDay', tempDay, 'tempMuscles', tempMuscles)
     onUpdate({ day: tempDay, muscles: tempMuscles });
     setIsEditing(false);
   };
@@ -83,7 +97,7 @@ return (
             onChange={(e) => setTempMuscles(e.target.value)}
             placeholder="Muscle Group"
           />
-          <button onClick={saveDay}>Save</button>
+          <button onClick={saveDay} className={checkBtn.check}></button>
         </div>
       ) : (
         <CardHeader
@@ -132,7 +146,7 @@ return (
       }
 
       <button onClick={onRemove}>
-        Remove
+        Remove Day
       </button>
     </div>
   );

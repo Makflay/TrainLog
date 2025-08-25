@@ -1,6 +1,18 @@
+import { FaPen } from 'react-icons/fa';
+import penBtn from './ui/PenButton.module.css';
+
 function ExerciseProgress({ done }) {
   return (
-    <p>Done: {done.join(", ")}</p>
+    <div>
+      <span>Done: {done.join(", ")}</span>
+      <span
+        className={penBtn.penBtn}
+        role="button"
+      >
+        <FaPen />
+      </span>
+    </div>
+
   );
 }
 
