@@ -4,7 +4,7 @@ import checkBtn from './ui/CheckButton.module.css'
 import CardHeader from './CardHeader';
 import ExerciseList from './ExerciseList';
 import createExercise from '../api/createExercise';
-import updateExercise from '../api/updateExercise';
+import updateExerciseApi from '../api/updateExerciseApi';
 
 function Card({ 
   data, onRemove, onUpdate, setWeek
@@ -52,25 +52,26 @@ function Card({
     console.log('exerciseId', exerciseId)
     console.log('dayId', data._id)
     console.log('updatedData', updatedData)
-    // try {
-    //   const updatedExercise = await updateExercise(exerciseId, updatedData);
+    try {
+      const updatedExercise = await updateExerciseApi(exerciseId, updatedData);
+      console.log('updatedExercise', updatedExercise);
 
-    //   setWeek(prevWeek => ({
-    //     ...prevWeek,
-    //     days: prevWeek.days.map(day =>
-    //       day._id === dayId
-    //         ? {
-    //             ...day,
-    //             exercises: day.exercises.map(ex =>
-    //               ex._id === exerciseId ? updatedExercise : ex
-    //             )
-    //           }
-    //         : day
-    //     )
-    //   }));
-    // } catch (err) {
-    //   console.error(err);
-    // }
+      setWeek(prevWeek => ({
+        ...prevWeek,
+        days: prevWeek.days.map(day =>
+          day._id === data._id
+            ? {
+                ...day,
+                exercises: day.exercises.map(ex =>
+                  ex._id === exerciseId ? updatedExercise : ex
+                )
+              }
+            : day
+        )
+      }));
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const deleteExercise = async () => {
@@ -78,7 +79,6 @@ function Card({
   }
 
   const saveDay = () => {
-    console.log('tempDay', tempDay, 'tempMuscles', tempMuscles)
     onUpdate({ day: tempDay, muscles: tempMuscles });
     setIsEditing(false);
   };
@@ -107,7 +107,10 @@ return (
         />
       )}
 
-      <ExerciseList exercises={data.exercises} onUpdateExercise={updateExercise}/>
+      <ExerciseList
+        exercises={data.exercises}
+        onUpdateExercise={updateExercise}
+      />
 
       {
         isAddNewEx ? (

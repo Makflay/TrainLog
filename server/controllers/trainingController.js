@@ -102,7 +102,6 @@ exports.createExercise = async (req, res) => {
 exports.updateExercise = async (req, res) => {
   try {
     const { name, planned, done, previous } = req.body;
-
     const exercise = await Exercise.findById(req.params.exerciseId).populate({
       path: 'day',
       populate: { path: 'week' }
@@ -111,14 +110,27 @@ exports.updateExercise = async (req, res) => {
     if (!exercise || String(exercise.day.week.user) !== String(req.user.id)) {
       return res.status(404).json({ message: 'Exercise not found' });
     }
-
+    
     if (name) exercise.name = name;
-    if (planned) exercise.planned = planned;
-    if (done) exercise.done = done;
-    if (previous) exercise.previous = previous;
+    if (planned) {
+      exercise.planned = planned;
+      const setsCount = planned.sets;
+
+      // Синхронизируем done
+      const baseDone = Array.isArray(done) ? done : exercise.done || [];
+      exercise.done = baseDone.slice(0, setsCount)
+        .concat(new Array(Math.max(0, setsCount - baseDone.length)).fill(0));
+      exercise.markModified('done');
+
+      // Синхронизируем previous
+      const basePrev = Array.isArray(previous) ? previous : exercise.previous || [];
+      exercise.previous = basePrev.slice(0, setsCount)
+        .concat(new Array(Math.max(0, setsCount - basePrev.length)).fill(0));
+      exercise.markModified('previous');
+    }
 
     await exercise.save();
-    res.json(exercise);``
+    res.json(exercise);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }

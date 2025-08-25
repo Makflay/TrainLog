@@ -1,6 +1,6 @@
 const API_URL = process.env.REACT_APP_API_URL;
 
-export default async function updateExercise(exerciseId, updatedData) {
+export default async function updateExerciseApi(exerciseId, updatedData) {
   const token = localStorage.getItem('token');
   try {
     const res = await fetch(`${API_URL}/training/exercise/update/${exerciseId}`, {

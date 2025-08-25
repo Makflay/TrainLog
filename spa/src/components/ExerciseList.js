@@ -9,7 +9,7 @@ function ExerciseList({ exercises, onUpdateExercise }) {
         <ExerciseItem
           key={el._id}
           exercise={el}
-          onUpdate={(updatedEx) => onUpdateExercise(el._id, updatedEx)}
+          updateExerciseItem={(updatedEx) => onUpdateExercise(el._id, updatedEx)}
         />
       ))}
     </div>

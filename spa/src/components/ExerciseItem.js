@@ -1,19 +1,32 @@
 import { useState } from 'react';
 import styles from './ui/ExerciseItem.module.css';
+import checkBtn from './ui/CheckButton.module.css';
+import deleteBtn from './ui/DeleteButton.module.css';
 import ExerciseTitle from './ExerciseTitle';
 import ExerciseProgress from './ExerciseProgress';
 import ExerciseHistory from './ExerciseHistory';
 
-function ExerciseItem({ exercise, onUpdate }) {
-  console.log('exercise', exercise)
+function ExerciseItem({ exercise, updateExerciseItem }) {  
 
+  const [isUpdateExercise, setIsUpdateExercise] = useState(false);
+  const [exerciseForm, setExerciseForm] = useState({
+    name: exercise.name,
+    planned: {
+      weight: exercise.planned.weight,
+      sets: exercise.planned.sets,
+      reps: exercise.planned.reps
+    },
+    done: exercise.done,
+    previous: exercise.previous,
+  });
   const [doneSets, setDoneSets] = useState(exercise.done.length ? exercise.done : []);
   const [isUpdateDoneSets] = useState(false);
   const [prevSets, setPrevSets] = useState(exercise.previous.length ? exercise.previous : []);
   const [isUpdatePrevSets] = useState(false);
 
-  const updateDataExercise = () => {
-
+  const saveExercise = () => {
+    updateExerciseItem(exerciseForm);
+    setIsUpdateExercise(false);
   }
 
   const removeExercise = () => {
@@ -58,9 +71,59 @@ function ExerciseItem({ exercise, onUpdate }) {
 
   return (
     <div className={styles.exerciseItem}>
-      <ExerciseTitle name={exercise.name} planned={exercise.planned} />
-      {/* Current progress */}
 
+      {
+        isUpdateExercise ? 
+          (
+            <div>
+              <input
+                value={exerciseForm.name}
+                onChange={e => setExerciseForm({...exerciseForm, name: e.target.value})}
+              />
+              <input
+                value={exerciseForm.planned.weight}
+                onChange={e => setExerciseForm({
+                  ...exerciseForm,
+                  planned:{...exerciseForm.planned, weight: e.target.value}
+                })}
+              />
+              <input
+                value={exerciseForm.planned.sets}
+                onChange={e => setExerciseForm({
+                  ...exerciseForm, 
+                  planned:{...exerciseForm.planned, sets: e.target.value}
+                })}
+              />
+              <input
+                value={exerciseForm.planned.reps}
+                onChange={e => setExerciseForm({
+                  ...exerciseForm,
+                  planned:{...exerciseForm.planned, reps: e.target.value}
+                })}
+              />
+              <input
+                value={exerciseForm.done}
+                onChange={e => setExerciseForm({...exerciseForm, done: e.target.value})}
+              />
+              <input
+                value={exerciseForm.previous}
+                onChange={e => setExerciseForm({...exerciseForm, previous: e.target.value})}
+              />
+              <button onClick={saveExercise} className={checkBtn.check}></button>
+            </div>
+          )
+          :
+          (
+            <ExerciseTitle
+              name={exercise.name}
+              planned={exercise.planned}
+              onEdit={() => setIsUpdateExercise(true)}
+            />
+          )
+      }
+      
+      
+      {/* Current progress */}
       {
         isUpdateDoneSets ? 
           (
@@ -102,6 +165,7 @@ function ExerciseItem({ exercise, onUpdate }) {
             <ExerciseHistory previous={exercise.previous} />
           )
       }
+      <botton className={deleteBtn.delete}>Delete Exercise</botton>
     </div>
   );
 }
