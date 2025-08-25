@@ -6,6 +6,7 @@ import ExerciseList from './ExerciseList';
 import createExercise from '../api/createExercise';
 import updateExerciseApi from '../api/updateExerciseApi';
 import deleteExerciseApi from '../api/deleteExerciseApi';
+import updateDoneProgressApi from '../api/updateDoneProgressApi';
 
 function Card({ 
   data, onRemove, onUpdate, setWeek
@@ -91,6 +92,30 @@ function Card({
     }
   }
 
+  const updateDoneProgress = async (exerciseId, newDone) => {
+    try {
+      console.log('exerciseId', exerciseId)
+      console.log('newDone', newDone)
+      const updatedExercise = await updateDoneProgressApi(exerciseId, newDone);
+      console.log('updatedExercise', updatedExercise)
+      setWeek(prevWeek => ({
+        ...prevWeek,
+        days: prevWeek.days.map(day =>
+          day._id === data._id
+            ? {
+                ...day,
+                exercises: day.exercises.map(ex =>
+                  ex._id === exerciseId ? updatedExercise : ex
+                )
+              }
+            : day
+        )
+      }));
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   const saveDay = () => {
     onUpdate({ day: tempDay, muscles: tempMuscles });
     setIsEditing(false);
@@ -124,6 +149,7 @@ return (
         exercises={data.exercises}
         onUpdateExercise={updateExercise}
         onDeleteExercise={deleteExercise}
+        onUpdateDone={updateDoneProgress}
       />
 
       {

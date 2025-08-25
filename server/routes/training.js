@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../middleware/authMiddleware');
 const {
-  getDayExercise, createDay, updateDay, deleteDay, createExercise, updateExercise, deleteExercise
+  getDayExercise, createDay, updateDay, deleteDay, createExercise, updateExercise, deleteExercise, updateDoneProgress
 } = require('../controllers/trainingController');
 
 router.get('/', authMiddleware, getDayExercise)
@@ -13,5 +13,6 @@ router.delete('/day/:dayId', authMiddleware, deleteDay);
 router.post('/exercise/create/:dayId', authMiddleware, createExercise);
 router.put('/exercise/update/:exerciseId', authMiddleware, updateExercise);
 router.delete('/exercise/:exerciseId', authMiddleware, deleteExercise);
+router.put('/exercise/update/done/:exerciseId', authMiddleware, updateDoneProgress);
 
 module.exports = router;

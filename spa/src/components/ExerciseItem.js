@@ -6,7 +6,7 @@ import ExerciseTitle from './ExerciseTitle';
 import ExerciseProgress from './ExerciseProgress';
 import ExerciseHistory from './ExerciseHistory';
 
-function ExerciseItem({ exercise, updateExerciseItem, deleteExerciseItem }) {  
+function ExerciseItem({ exercise, updateExerciseItem, deleteExerciseItem, onUpdateDoneItem }) {  
 
   const [isUpdateExercise, setIsUpdateExercise] = useState(false);
   const [exerciseForm, setExerciseForm] = useState({
@@ -20,7 +20,7 @@ function ExerciseItem({ exercise, updateExerciseItem, deleteExerciseItem }) {
     previous: exercise.previous,
   });
   const [doneSets, setDoneSets] = useState(exercise.done.length ? exercise.done : []);
-  const [isUpdateDoneSets] = useState(false);
+  const [isUpdateDoneSets, setIsUpdateDoneSets] = useState(false);
   const [prevSets, setPrevSets] = useState(exercise.previous.length ? exercise.previous : []);
   const [isUpdatePrevSets] = useState(false);
 
@@ -29,16 +29,21 @@ function ExerciseItem({ exercise, updateExerciseItem, deleteExerciseItem }) {
     setIsUpdateExercise(false);
   }
 
-  const removeExercise = () => {
-
-  }
-
   // update one set Done
-  const updateDoneSet = (index, value) => {
-    console.log('updateDoneSet')
-    // const newDone = [...doneSets];
-    // newDone[index] = parseInt(value) || 0;
-    // setDoneSets(newDone);
+  const updateDoneSet = () => {
+    console.log('updateDoneSet');
+    console.log(exerciseForm.done);
+    setIsUpdateDoneSets(false);
+    onUpdateDoneItem(exerciseForm.done);
+    setIsUpdateDoneSets(false);
+  };
+
+  const handleDoneChange = (i, value) => {
+    setExerciseForm(prev => {
+      const newDone = [...prev.done];
+      newDone[i] = Number(value);
+      return { ...prev, done: newDone };
+    });
   };
 
   // update one set Previous
@@ -57,11 +62,6 @@ function ExerciseItem({ exercise, updateExerciseItem, deleteExerciseItem }) {
     if (prevSets.length < 12) setPrevSets([...prevSets, 0]);
   };
 
-  // save updates
-  const saveDone = () => {
-    console.log('saveDone')
-    //onUpdate({ ...exercise, done: doneSets });
-  }
   const savePrev = () => {
     console.log('savePrev');
     //onUpdate({ ...exercise, previous: prevSets });
@@ -129,19 +129,24 @@ function ExerciseItem({ exercise, updateExerciseItem, deleteExerciseItem }) {
           (
             <div className={styles.inputRow}>
               <span>Done:</span>
-                {doneSets.map((val, i) => (
+                {exerciseForm.done.map((el, i) => (
                   <input
                     key={i}
                     type="number"
-                    value={val}
-                    onChange={(e) => updateDoneSet(i, e.target.value)}
+                    value={el}
+                    onChange={e => handleDoneChange(i, e.target.value)}
                   />
                 ))}
-              <button onClick={saveDone}>save</button>
+              <button onClick={updateDoneSet}>save</button>
             </div>
           )
           :
-          (<ExerciseProgress done={exercise.done} />)
+          (
+            <ExerciseProgress
+              done={exercise.done}
+              onEdit={() => setIsUpdateDoneSets(true)}
+            />
+          )
       }
       {/* History */}
       {

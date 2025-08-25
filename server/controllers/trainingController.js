@@ -156,3 +156,33 @@ exports.deleteExercise = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
+
+exports.updateDoneProgress = async (req, res) => {
+  try {
+    const { done } = req.body;
+    console.log('req.body', req.body);
+    console.log('req.params', req.params)
+    console.log('done', done);
+    console.log('req.params.exerciseId', req.params.exerciseId);
+    const exercise = await Exercise.findById(req.params.exerciseId).populate({
+      path: 'day',
+      populate: { path: 'week' }
+    });
+
+    console.log('exercise', exercise)
+
+    if (!exercise || String(exercise.day.week.user) !== String(req.user.id)) {
+      return res.status(404).json({ message: 'Exercise not found' });
+    }
+
+    if (Array.isArray(done)) {
+      exercise.done = done.map(Number);
+      exercise.markModified('done');
+    }
+
+    await exercise.save();
+    res.json(exercise);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
