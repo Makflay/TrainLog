@@ -5,6 +5,7 @@ import CardHeader from './CardHeader';
 import ExerciseList from './ExerciseList';
 import createExercise from '../api/createExercise';
 import updateExerciseApi from '../api/updateExerciseApi';
+import deleteExerciseApi from '../api/deleteExerciseApi';
 
 function Card({ 
   data, onRemove, onUpdate, setWeek
@@ -49,9 +50,6 @@ function Card({
   };
 
   const updateExercise = async (exerciseId, updatedData) => {
-    console.log('exerciseId', exerciseId)
-    console.log('dayId', data._id)
-    console.log('updatedData', updatedData)
     try {
       const updatedExercise = await updateExerciseApi(exerciseId, updatedData);
       console.log('updatedExercise', updatedExercise);
@@ -74,8 +72,23 @@ function Card({
     }
   };
 
-  const deleteExercise = async () => {
-    //
+  const deleteExercise = async (exerciseId) => {
+    try {
+      const deletedExercise = await deleteExerciseApi(exerciseId);
+      setWeek(prevWeek => ({
+        ...prevWeek,
+        days: prevWeek.days.map(day =>
+          day._id === data._id
+            ? {
+                ...day,
+                exercises: day.exercises.filter(ex => ex._id !== deletedExercise.exerciseId)
+              }
+            : day
+        )
+      }));
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   const saveDay = () => {
@@ -110,6 +123,7 @@ return (
       <ExerciseList
         exercises={data.exercises}
         onUpdateExercise={updateExercise}
+        onDeleteExercise={deleteExercise}
       />
 
       {

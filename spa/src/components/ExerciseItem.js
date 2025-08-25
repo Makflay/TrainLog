@@ -6,7 +6,7 @@ import ExerciseTitle from './ExerciseTitle';
 import ExerciseProgress from './ExerciseProgress';
 import ExerciseHistory from './ExerciseHistory';
 
-function ExerciseItem({ exercise, updateExerciseItem }) {  
+function ExerciseItem({ exercise, updateExerciseItem, deleteExerciseItem }) {  
 
   const [isUpdateExercise, setIsUpdateExercise] = useState(false);
   const [exerciseForm, setExerciseForm] = useState({
@@ -165,7 +165,7 @@ function ExerciseItem({ exercise, updateExerciseItem }) {
             <ExerciseHistory previous={exercise.previous} />
           )
       }
-      <botton className={deleteBtn.delete}>Delete Exercise</botton>
+      <button onClick={deleteExerciseItem} className={deleteBtn.delete}>Delete Exercise</button>
     </div>
   );
 }

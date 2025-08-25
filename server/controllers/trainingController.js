@@ -116,13 +116,11 @@ exports.updateExercise = async (req, res) => {
       exercise.planned = planned;
       const setsCount = planned.sets;
 
-      // Синхронизируем done
       const baseDone = Array.isArray(done) ? done : exercise.done || [];
       exercise.done = baseDone.slice(0, setsCount)
         .concat(new Array(Math.max(0, setsCount - baseDone.length)).fill(0));
       exercise.markModified('done');
 
-      // Синхронизируем previous
       const basePrev = Array.isArray(previous) ? previous : exercise.previous || [];
       exercise.previous = basePrev.slice(0, setsCount)
         .concat(new Array(Math.max(0, setsCount - basePrev.length)).fill(0));
@@ -135,3 +133,26 @@ exports.updateExercise = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 }
+
+exports.deleteExercise = async (req, res) => {
+  try {
+    const exercise = await Exercise.findById(req.params.exerciseId).populate({
+      path: 'day',
+      populate: { path: 'week' }
+    });
+
+    if (!exercise || String(exercise.day.week.user) !== String(req.user.id)) {
+      return res.status(404).json({ message: 'Exercise not found' });
+    }
+
+    const day = await Day.findById(exercise.day._id);
+    day.exercises = day.exercises.filter(id => String(id) !== String(exercise._id));
+    await day.save();
+
+    await Exercise.findByIdAndDelete(exercise._id);
+
+    res.json({exerciseId: exercise._id });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
